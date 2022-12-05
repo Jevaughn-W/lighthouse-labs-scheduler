@@ -8,8 +8,8 @@ export default function InterviewerList(props) {
       key={interviewer.id}
       avatar={interviewer.avatar}
       name={interviewer.name}
-      setInterviewer={() => props.setInterviewer(interviewer.id)}
-      selected={props.interviewer === interviewer.id}
+      setInterviewer={() => props.onChange(interviewer.id)}
+      selected={props.value === interviewer.id}
     />
     );
   });
