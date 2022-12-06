@@ -1,4 +1,3 @@
-import { process_params } from "express/lib/router";
 import React from "react";
 
 export default function Show(props) {
