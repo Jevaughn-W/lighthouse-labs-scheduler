@@ -45,3 +45,28 @@ export function getInterview(state, interview) {
 
   return result;
 }
+
+// Selector to pull information for on the interviewers for day selected
+
+export function getInterviewersForDay(state, day) {
+  let result = [];
+  let interviewersForDay;
+
+  state.days.forEach((dayObj) => {
+    if (dayObj.name === day) {
+      interviewersForDay = dayObj.interviewers;
+    }
+  });
+
+  if (interviewersForDay === undefined) {
+    return result;
+  } 
+  
+  interviewersForDay.forEach((interviewer) => {
+    if (state.interviewers[interviewer]) {
+      result.push(state.interviewers[interviewer]);
+    }
+  });
+
+  return result;
+}
