@@ -8,21 +8,24 @@ import useVisualMode from "hooks/useVisualMode";
 
 export default function Appointment(props) {
 
-  function save(name, interviewer) {
-    const interview = {
-      student: name,
-      interviewer,
-    };
-    props.bookInterview(props.id, interview);
-  }
   
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
-
+  
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
-  );
+    );
+    
+    function save(name, interviewer) {
+      const interview = {
+        student: name,
+        interviewer,
+      };
+      props.bookInterview(props.id, interview);
+
+      transition(SHOW); // After saving, shows the appointment
+    }
 
   return (
   <article className="appointment">
