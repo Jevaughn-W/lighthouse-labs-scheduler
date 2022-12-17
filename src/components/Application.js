@@ -9,6 +9,10 @@ import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "help
 
 export default function Application(props) {
   
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+  }
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -57,6 +61,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
       />
     )
   })
@@ -88,7 +93,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appointmentList}
-        <Appointment key="last" time="5pm" />
+        <Appointment key="last" time="5pm" /> {/* Ad more props or better way to do this*/}
       </section>
     </main>
   );
