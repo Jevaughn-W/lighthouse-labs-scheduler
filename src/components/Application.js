@@ -48,7 +48,7 @@ export default function Application(props) {
   
   // Function to add in new interview for the day
   function bookInterview(id, interview) {
-
+    
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -58,8 +58,12 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
+    setState(prev => ({...prev, appointments})) // Unable to set state after the put request is made - do we need to chain promise??
 
-    setState(prev => ({...prev, appointments}));
+    return (
+      axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
+    )
+
   }
   // Function to render list of appointments after converting object to array
   const appointmentList = dailyAppointments.map((appointment) => {
