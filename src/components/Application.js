@@ -62,7 +62,7 @@ export default function Application(props) {
     return (
       axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
         .then(()=> setState(prev => ({...prev, appointments})))
-    )
+    );
   }
 
   // Function to make API request to remove interview
@@ -76,11 +76,13 @@ export default function Application(props) {
       ...state.appointments, [id]: appointment
     };
     
-    setState(prev => ({...prev, appointments}));
+    // setState(prev => ({...prev, appointments}));
 
   
-    axios.delete(`http://localhost:8001/api/appointments/${id}`);
-  
+    return (
+      axios.delete(`http://localhost:8001/api/appointments/${id}`)
+        .then((res)=>  setState(prev => ({...prev, appointments})))
+    );
 
   }
 
