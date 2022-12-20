@@ -41,8 +41,8 @@ export default function Appointment(props) {
 
   function deleteConfirmed() {
     transition(DELETING);
-    props.cancelInterview(props.id);
-    transition(EMPTY); // Empty the appointment once the information has been deleted. Need to work on a . then
+    props.cancelInterview(props.id)
+      .then(() => transition(EMPTY)); // Empty the appointment once the information has been deleted. Need to work on a . then
   }
   
   return (
