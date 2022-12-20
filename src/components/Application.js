@@ -58,10 +58,10 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState(prev => ({...prev, appointments})) // Unable to set state after the put request is made - do we need to chain promise??
 
     return (
       axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
+        .then(()=> setState(prev => ({...prev, appointments})))
     )
   }
 
