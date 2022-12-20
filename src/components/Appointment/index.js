@@ -30,10 +30,9 @@ export default function Appointment(props) {
     };
     transition(SAVING);
     props.bookInterview(props.id, interview)
-      .then(transition(SHOW));
-      
-    // transition(SHOW); // After saving, shows the appointment
-     
+      .then((res)=> {
+        transition(SHOW)
+    });
   }
 
   function deleteAppointment() {
