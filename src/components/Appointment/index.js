@@ -5,12 +5,14 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 import "./styles.scss";
 import useVisualMode from "hooks/useVisualMode";
 
 export default function Appointment(props) {
 
-  
+  // Variables used to update which mode is shown
+
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
@@ -18,6 +20,8 @@ export default function Appointment(props) {
   const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
   
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -31,18 +35,26 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview)
       .then((res)=> {
-        transition(SHOW)
-    });
+        transition(SHOW)  // If save request resolves, show the appointment data
+      })
+      .catch((err) => {
+        transition(ERROR_SAVE, true); // If an error occurs on the request, show the error component
+       });
   }
 
-  function deleteAppointment() {
+  function deleteAppointment() { // If delete is clicked, function is called to transition to confirmation page
     transition(CONFIRM);
   }
 
-  function deleteConfirmed() {
-    transition(DELETING);
+  function deleteConfirmed() {  // If delete is confirmed, functionis called to update the interview object to null
+    transition(DELETING, true);
     props.cancelInterview(props.id)
-      .then(() => transition(EMPTY)); // Empty the appointment once the information has been deleted. Need to work on a . then
+      .then(() => {
+        transition(EMPTY)
+      })
+      .catch((err) => {
+        transition(ERROR_DELETE, true);
+      }); // Empty the appointment once the information has been deleted. Need to work on a . then
   }
   
   return (
@@ -94,6 +106,19 @@ export default function Appointment(props) {
         onSave={save}
         onCancel={back}
         appointmentId={props.id}
+      />
+    )}
+
+    {mode === ERROR_SAVE && (
+      <Error
+      message="Unable to save appointment"  
+      onClose={back}
+      />
+    )}
+    {mode === ERROR_DELETE && (
+      <Error
+        message="Unable to delete appointment"
+        onClose={back}
       />
     )}
 
