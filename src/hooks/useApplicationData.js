@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+
 export default function useApplicationData() {
   const [state, setState] = useState({
     day: "Monday",
@@ -49,6 +50,7 @@ export default function useApplicationData() {
     return (
       axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
         .then(()=> setState(prev => ({...prev, appointments})))
+        .then(()=> numberOfSpots(true))
     );
   }
 
@@ -63,13 +65,34 @@ export default function useApplicationData() {
       ...state.appointments, [id]: appointment
     };
     
-    // setState(prev => ({...prev, appointments}));
 
   
     return (
       axios.delete(`http://localhost:8001/api/appointments/${id}`)
         .then((res)=>  setState(prev => ({...prev, appointments})))
+        .then(() => {numberOfSpots(false)})
     );
+  }
+
+  // Count the remaining spots
+
+  function numberOfSpots(add) {
+    let spots = 0;
+    let days = [];
+    let day = {};
+
+    // Iterate through days object and if day == to current state edit state
+    state.days.forEach((dayObj) => {
+      if (dayObj.name === state.day) {
+        spots = dayObj.spots;
+        add ? spots -= 1: spots += 1;
+        day = {...dayObj, spots};
+        days.push(day);
+      } else {
+        days.push(dayObj);
+      }
+    })
+    setState(prev => ({...prev, days}))
   }
 
   // Return functions
