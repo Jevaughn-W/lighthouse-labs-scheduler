@@ -18,9 +18,9 @@ export default function useApplicationData() {
    useEffect(() => {
      
      const routes = {
-       getDays: "http://localhost:8001/api/days",
-       getAppointments: "http://localhost:8001/api/appointments",
-       getInterviews: "http://localhost:8001/api/interviewers"
+       getDays: "/api/days",
+       getAppointments: "/api/appointments",
+       getInterviews: "/api/interviewers"
      };
      
      // Updating states with data obtained from axios requests
