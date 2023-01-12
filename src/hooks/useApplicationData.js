@@ -48,7 +48,7 @@ export default function useApplicationData() {
     };
 
     return (
-      axios.put(`http://localhost:8001/api/appointments/${id}`, {interview})
+      axios.put(`api/appointments/${id}`, {interview})
         .then(()=> setState(prev => ({...prev, appointments})))
         .then(()=> numberOfSpots(true))
     );
@@ -68,7 +68,7 @@ export default function useApplicationData() {
 
   
     return (
-      axios.delete(`http://localhost:8001/api/appointments/${id}`)
+      axios.delete(`/api/appointments/${id}`)
         .then((res)=>  setState(prev => ({...prev, appointments})))
         .then(() => {numberOfSpots(false)})
     );
