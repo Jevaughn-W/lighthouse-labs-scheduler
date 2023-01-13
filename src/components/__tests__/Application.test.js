@@ -1,7 +1,6 @@
 import React from "react";
-import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getAllByTestId, getByPlaceholderText, getByAltText, queryByText } from "@testing-library/react";
+import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getAllByTestId, getByPlaceholderText, getByAltText, queryByText, queryByAltText} from "@testing-library/react";
 import Application from "components/Application";
-
 
 afterEach(cleanup);
 
@@ -39,9 +38,41 @@ describe("Application", () => {
 
     const days = getAllByTestId(container, 'day')
     const day = days.find(element => element ="monday")
-    
     expect(queryByText(day, "no spots remaining")).toBeInTheDocument();
 
+  });
+
+  it("loads data, cancels an interview and increases the spots remainging for Monday by 1", async () => {
+
+    // 1. Render the Application
+    const { container, debug } = render(<Application/>);
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+    
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
+    
+    // 2. Click on the delete button
+    fireEvent.click(getByAltText(appointment, "Delete"));
+    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+
+    // 3. Wait until the confirm delete component is displayed
+    await waitForElement(() => getByText(appointment, "Confirm"));
+    
+    // 3. Click on the yes button of the confirm delete appointment component 
+    fireEvent.click(getByText(appointment, "Confirm"));
+    
+    // 4. Check that the element with the text "Deleting" is displayed
+    expect(queryByText(appointment, "Deleting")).toBeInTheDocument();
+   
+    // 5. Wait for the "add" button to appear
+    await waitForElement(() => queryByAltText(appointment, "Add"))
+
+    
+    // 6. Check that the Daylist with the text "Monday" also has 2 spots remaining
+    const days = getAllByTestId(container, 'day')
+    const day = days.find(element => element ="monday")
+    expect(queryByText(day, "2 spots remaining")).toBeInTheDocument();
   });
   
 });
