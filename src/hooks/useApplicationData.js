@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { getAppointmentsForDay } from "helpers/selectors";
 
 
 export default function useApplicationData() {
@@ -46,11 +47,19 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const newState = { // State state occurs when using previous state, need to manually reset state
+      day: state.day,
+      days: state.days,
+      appointments: appointments,
+      interviewers: state.interviewers,
+    };
+
+    setState(newState);
 
     return (
       axios.put(`api/appointments/${id}`, {interview})
-        .then(()=> setState(prev => ({...prev, appointments})))
-        .then(()=> numberOfSpots(true))
+        .then(()=> setState(newState))
+        .then(()=> {numberOfSpots(newState);})
     );
   }
 
@@ -65,36 +74,52 @@ export default function useApplicationData() {
       ...state.appointments, [id]: appointment
     };
     
+    const newState = { // State state occurs when using previous state, need to manually reset state
+      day: state.day,
+      days: state.days,
+      appointments: appointments,
+      interviewers: state.interviewers,
+    };
 
+    setState(newState);
+    
   
     return (
       axios.delete(`/api/appointments/${id}`)
-        .then((res)=>  setState(prev => ({...prev, appointments})))
-        .then(() => {numberOfSpots(false)})
+        .then((res)=>  setState(newState))
+        .then(() => {numberOfSpots(newState)})
     );
   }
 
   // Count the remaining spots
 
-  function numberOfSpots(add) {
+  function numberOfSpots(state) {
+    
+    let day = state.days.find(element => element.name === state.day)
     let spots = 0;
     let days = [];
-    let day = {};
+    const appointments = getAppointmentsForDay(state, state.day);
+    
 
+    for (let appointment in appointments) {
+      if(appointments[appointment].interview === null) {
+        spots += 1;
+      }
+    }
+    
     // Iterate through days object and if day == to current state edit state
     state.days.forEach((dayObj) => {
       if (dayObj.name === state.day) {
-        spots = dayObj.spots;
-        add ? spots -= 1: spots += 1;
-        day = {...dayObj, spots};
+        day = {...dayObj, spots}
         days.push(day);
       } else {
         days.push(dayObj);
       }
     })
+
     setState(prev => ({...prev, days}))
   }
-
+  
   // Return functions
   return { state, setDay, bookInterview, cancelInterview };
 
