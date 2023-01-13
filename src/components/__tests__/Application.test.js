@@ -42,7 +42,7 @@ describe("Application", () => {
 
   });
 
-  it("loads data, cancels an interview and increases the spots remainging for Monday by 1", async () => {
+  it("loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
 
     // 1. Render the Application
     const { container, debug } = render(<Application/>);
@@ -55,9 +55,6 @@ describe("Application", () => {
     // 2. Click on the delete button
     fireEvent.click(getByAltText(appointment, "Delete"));
     expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
-
-    // 3. Wait until the confirm delete component is displayed
-    await waitForElement(() => getByText(appointment, "Confirm"));
     
     // 3. Click on the yes button of the confirm delete appointment component 
     fireEvent.click(getByText(appointment, "Confirm"));
@@ -75,4 +72,5 @@ describe("Application", () => {
     expect(queryByText(day, "2 spots remaining")).toBeInTheDocument();
   });
   
+
 });
