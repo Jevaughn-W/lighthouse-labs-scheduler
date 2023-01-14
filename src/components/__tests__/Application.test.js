@@ -1,6 +1,7 @@
 import React from "react";
 import { render, cleanup, waitForElement, fireEvent, prettyDOM, getByText, getAllByTestId, getByPlaceholderText, getByAltText, queryByText, queryByAltText} from "@testing-library/react";
 import Application from "components/Application";
+import axios from "axios";
 
 afterEach(cleanup);
 
@@ -47,7 +48,7 @@ describe("Application", () => {
     // 1. Render the Application
     const { container, debug } = render(<Application/>);
     await waitForElement(() => getByText(container, "Archie Cohen"));
-    debug();
+
     const appointment = getAllByTestId(container, "appointment").find(
       appointment => queryByText(appointment, "Archie Cohen")
     );
@@ -108,5 +109,67 @@ describe("Application", () => {
     const day = days.find(element => element ="monday")
     expect(queryByText(day, "1 spot remaining")).toBeInTheDocument();
   });
+
+  it("shows the save error when failing to save an appointment", async () => {
+    axios.put.mockRejectedValueOnce();
+    // 1. Render application
+    const { container, debug } = render(<Application/>);
+
+    // 2. Wait for Andy Cohen to appear
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. Isolate the appointment and select Andy's appointment
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
+    
+    // 4. Click the edit button
+    fireEvent.click(getByAltText(appointment, "Edit"));
+   
+    fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
+      target: { value: "Lydia Miller-Jones" }
+    });
+    
+    // 6. Update the name and interview
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
+    
+    // 7. Click save
+    fireEvent.click(getByText(appointment, "Save"));
+
+    await waitForElement(() => queryByText(container, "Unable to save appointment")); 
+
+    fireEvent.click(getByAltText(container, "Close"));
+
+  });
+
+  it("shows the delete error when failing to delete an existing appointment", async () => {
+    axios.delete.mockRejectedValueOnce();
+    // 1. Render application
+    const { container, debug } = render(<Application/>);
+
+    // 2. Wait for Andy Cohen to appear
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. Isolate the appointment and select Andy's appointment
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
+    
+    // 4. Click on the delete button
+    fireEvent.click(getByAltText(appointment, "Delete"));
+    expect(getByText(appointment, "Are you sure you would like to delete?")).toBeInTheDocument();
+    
+    // 3. Click on the yes button of the confirm delete appointment component 
+    fireEvent.click(getByText(appointment, "Confirm"));
+    
+    // 4. Check that the element with the text "Deleting" is displayed
+    expect(queryByText(appointment, "Deleting")).toBeInTheDocument();
+  
+    await waitForElement(() => queryByText(appointment, "Unable to delete appointment")); 
+    
+    fireEvent.click(queryByAltText(appointment, "Close")); // Bug not allowing to close
+
+  });
+
 
 });
