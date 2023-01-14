@@ -81,7 +81,6 @@ export default function useApplicationData() {
       interviewers: state.interviewers,
     };
 
-    setState(newState);
     
   
     return (
