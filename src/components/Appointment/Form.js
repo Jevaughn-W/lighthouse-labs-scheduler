@@ -37,7 +37,7 @@ export default function Form(props)  {
   }
 
   return(
-    <main className="appointment__card appointment__card--create">
+    <main className="appointment__card appointment__card--create"> {/*Main appoitmentment card - left section*/}
       <section className="appointment__card-left">
         <form autoComplete="off" onSubmit={(event)=> event.preventDefault()}>
           <input
@@ -50,19 +50,19 @@ export default function Form(props)  {
             data-testid="student-name-input"
             />
         </form>
-        <section className="appointment__validation">{error}</section>
+        <section className="appointment__validation">{error}</section> {/*Should appear if there user submits empty interview or name*/}
         <InterviewerList 
           value={interviewer}
           interviewers={props.interviewers}
           onChange={setInterviewer}
         />
       </section>
-      <section className="appointment__card-right">
+      <section className="appointment__card-right"> {/*Main appoitmentment card - right section*/}
         <section className="appointment__actions">
           <Button danger onClick={cancel} >Cancel</Button>
           <Button confirm onClick={() => validate()} >Save</Button>
         </section>
       </section>
-  </main>
+    </main>
   )
 }
