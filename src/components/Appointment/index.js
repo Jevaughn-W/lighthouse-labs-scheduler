@@ -39,7 +39,7 @@ export default function Appointment(props) {
       })
       .catch((err) => {
         transition(ERROR_SAVE, true); // If an error occurs on the request, show the error component
-       });
+    });
   }
 
   function deleteAppointment() { // If delete is clicked, function is called to transition to confirmation page
@@ -50,11 +50,11 @@ export default function Appointment(props) {
     transition(DELETING, true);
     props.cancelInterview(props.id)
       .then(() => {
-        transition(EMPTY)
+        transition(EMPTY) // Empty the appointment once the information has been deleted
       })
       .catch((err) => {
-        transition(ERROR_DELETE, true);
-      }); // Empty the appointment once the information has been deleted. Need to work on a . then
+        transition(ERROR_DELETE, true); // If there is a server error, show the error component
+      }); 
   }
   
   return (
