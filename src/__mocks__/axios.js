@@ -1,4 +1,4 @@
-const fixtures = {
+const fixtures = {  // Sample data which acts as the database
   days: [
     {
       id: 1,
@@ -79,7 +79,7 @@ export default {
       })
     }
   }),
-  put: jest.fn((url) => {
+  put: jest.fn((url) => {      // Doesn't need to include the extra parameters as the normal axios request
       return Promise.resolve({
         status: 204,
         statusText: "No Content"
