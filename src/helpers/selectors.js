@@ -5,18 +5,18 @@ export function getAppointmentsForDay(state, day) {
   let result = [];
   let appointmentsForDay;
 
-  state.days.forEach((dayObj) => {
+  state.days.forEach((dayObj) => {  // Iterate through each day array passed to state
     if (dayObj.name === day) {
-      appointmentsForDay = dayObj.appointments
+      appointmentsForDay = dayObj.appointments // Passes the the appointments containing array of ids
     }
   });
 
-  if (appointmentsForDay === undefined) {
+  if (appointmentsForDay === undefined) { // If there are no appointments in the variable return empty
     return result;
   } 
   
   appointmentsForDay.forEach((appointment) => {
-    if (state.appointments[appointment]) {
+    if (state.appointments[appointment]) { // Check each appointment is a truthy and the push to array of appointment
       result.push(state.appointments[appointment]);
     }
   });
@@ -35,7 +35,7 @@ export function getInterview(state, interview) {
     return null;
   };
 
-  const arrayOfInterviewers =  Object.values(state.interviewers);
+  const arrayOfInterviewers =  Object.values(state.interviewers); // Convert array to an array
 
   arrayOfInterviewers.forEach((interviewer) => {
     if (interviewer.id === interview.interviewer) {
