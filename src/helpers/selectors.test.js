@@ -1,5 +1,6 @@
 import { getAppointmentsForDay, getInterviewersForDay ,getInterview } from "helpers/selectors";
 
+// Smaple data
 const state = {
   days: [
     {
@@ -43,6 +44,8 @@ const state = {
     }
   }
 };
+
+// get appointment tests
 
 test("getAppointmentsForDay returns an array", () => {
   const result = getAppointmentsForDay(state, "Monday");
