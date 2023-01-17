@@ -42,3 +42,23 @@ npm run storybook or yarn run storybook
 ```sh
 npm run cypress or yarn run cypress
 ```
+## Screenshots
+
+Application home page:
+![Application on load](https://github.com/Jevaughn-W/lighthouse-labs-scheduler/blob/master/docs/Screen%20Shot%202023-01-16%20at%207.06.33%20AM.png)
+
+Adding appointment:
+![Booking Appointment](https://github.com/Jevaughn-W/lighthouse-labs-scheduler/blob/master/docs/Screen%20Shot%202023-01-16%20at%207.06.59%20AM.png)
+
+Booked appointment:
+![Booked Appointment](https://github.com/Jevaughn-W/lighthouse-labs-scheduler/blob/master/docs/Screen%20Shot%202023-01-16%20at%207.07.40%20AM.png)
+
+Delete appointment:
+![Delete confirmation page](https://github.com/Jevaughn-W/lighthouse-labs-scheduler/tree/master/docs#:~:text=Screen%20Shot%202023%2D01%2D16%20at%207.08.15%20AM.png)
+
+Submit empty form:
+![Input Error](https://github.com/Jevaughn-W/lighthouse-labs-scheduler/blob/master/docs/Screen%20Shot%202023-01-16%20at%207.09.16%20AM.png)
+
+Edit error:
+![API Error](https://github.com/Jevaughn-W/lighthouse-labs-scheduler/blob/master/docs/Screen%20Shot%202023-01-16%20at%207.09.55%20AM.png)
+
